@@ -1,0 +1,26 @@
+{
+  "name": "dev-standup-backend",
+  "version": "0.0.1",
+  "description": "Micro backend for dev-standup",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WallyOxen/Dev-Standup-backend.git"
+  },
+  "author": "WallyOxen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WallyOxen/Dev-Standup-backend/issues"
+  },
+  "homepage": "https://github.com/WallyOxen/Dev-Standup-backend#readme",
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "micro": "^9.3.4"
+  }
+}
