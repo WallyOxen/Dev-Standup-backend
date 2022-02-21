@@ -1,6 +1,18 @@
 import { send, json } from "micro";
 import { db } from "./dbConn";
 
+const getAllDevs = async (req: any, res: any) => {
+  try {
+    const devs = await db("devs").select(["name", "id", "left"]);
+    send(res, 200, devs);
+  } catch (e) {
+    console.error(e);
+    send(res, 500, {
+      error: "There was an error retrieving all developers!",
+    });
+  }
+};
+
 const getActiveDevs = async (req: any, res: any) => {
   try {
     const devs = await db("devs").select(["name", "id"]).whereNot("left", true);
@@ -20,7 +32,7 @@ const addDev = async (req: any, res: any) => {
   }
   try {
     const result = await db("devs")
-      .insert({ id: 21, name: request.name })
+      .insert({ name: request.name })
       .returning("*");
     send(res, 200, result);
   } catch (e) {
@@ -52,6 +64,29 @@ const updateDevLeft = async (req: any, res: any) => {
   }
 };
 
+const updateDevJoined = async (req: any, res: any) => {
+  const request = await json(req);
+  if (!request.id) {
+    send(res, 422, {
+      error: "You must provide the id of the developer that left!",
+    });
+    return;
+  }
+
+  try {
+    const result = await db("devs")
+      .where("id", request.id)
+      .update({
+        left: false,
+      })
+      .returning("*");
+    send(res, 200, result);
+  } catch (e) {
+    console.error(e);
+    send(res, 500, { error: "There was an error updating the developer!" });
+  }
+};
+
 const getGoneDevs = async (req: any, res: any) => {
   try {
     const devs = await db("devs").select(["name"]).where("left", true);
@@ -64,4 +99,11 @@ const getGoneDevs = async (req: any, res: any) => {
   }
 };
 
-export { getActiveDevs, addDev, updateDevLeft, getGoneDevs };
+export {
+  getAllDevs,
+  getActiveDevs,
+  addDev,
+  updateDevLeft,
+  updateDevJoined,
+  getGoneDevs,
+};
