@@ -3,8 +3,8 @@ import { db } from "./dbConn";
 
 const getActiveDevs = async (req: any, res: any) => {
   try {
-    const devs = await db("devs").select(["name"]).whereNot("left", true);
-    send(res, 200, JSON.stringify(devs));
+    const devs = await db("devs").select(["name", "id"]).whereNot("left", true);
+    send(res, 200, devs);
   } catch (e) {
     send(res, 500, {
       error: "There was an error retrieving active developers!",
@@ -22,7 +22,7 @@ const addDev = async (req: any, res: any) => {
     const result = await db("devs")
       .insert({ id: 21, name: request.name })
       .returning("*");
-    send(res, 200, { result });
+    send(res, 200, result);
   } catch (e) {
     console.error(e);
     send(res, 500, { error: "There was an error inserting a new developer!" });
@@ -45,7 +45,7 @@ const updateDevLeft = async (req: any, res: any) => {
         left: true,
       })
       .returning("*");
-    send(res, 200, { result });
+    send(res, 200, result);
   } catch (e) {
     console.error(e);
     send(res, 500, { error: "There was an error updating the developer!" });

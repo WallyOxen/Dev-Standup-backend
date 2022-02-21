@@ -16,7 +16,7 @@ const getAllNotes = async (req: any, res: any) => {
       "notes.blockers",
       "notes.date",
     ]);
-  send(res, 200, JSON.stringify(notes));
+  send(res, 200, notes);
 };
 
 const addNotes = async (req: any, res: any) => {
@@ -38,7 +38,7 @@ const addNotes = async (req: any, res: any) => {
 
   try {
     const results = await db("notes").insert(request).returning("*");
-    send(res, 200, { results });
+    send(res, 200, results);
   } catch (e) {
     console.error(e);
     send(res, 500, { error: "There was a problem adding the notes!" });
